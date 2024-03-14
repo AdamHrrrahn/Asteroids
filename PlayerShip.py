@@ -27,8 +27,6 @@ class PlayerShip(arcade.Sprite):
 
 
     def get_textures(self):
-        # for i in range():
-        #     self.accel_textures.append(arcade.load_)
         textures = arcade.texture.load_spritesheet("sprites\PlayerShip\PlayerShipSpriteSheet.png.png", 32, 32, 4, 12)
         for i in range(0,4):
             self.straight_textures.append(textures[i])
@@ -36,14 +34,6 @@ class PlayerShip(arcade.Sprite):
             self.turn_right_textures.append(textures[i])
         for i in range(8,11):
             self.turn_left_textures.append(textures[i])
-
-        # for i in range(10):
-        #     if i % 3 == 0:
-        #         self.straight_textures.append(textures[i])
-        #     elif i % 3 == 1:
-        #         self.turn_right_textures.append(textures[i])
-        #     elif i % 3 == 2:
-        #         self.turn_left_textures.append(textures[i])
 
 
     def change_animation(self, i):
@@ -92,4 +82,5 @@ class PlayerShip(arcade.Sprite):
         x = -self.bulletSpeed * math.sin(angleRad)
         y = self.bulletSpeed * math.cos(angleRad)
         bullet.setup((x,y), self.center_x, self.center_y, self.angle, self.bulletStrength)
+        arcade.Sound(parameters.SOUND_SHOOT).play()
         return bullet

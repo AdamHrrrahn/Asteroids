@@ -2,6 +2,8 @@ from NPO import NonPlayerObject
 from Bullet import Bullet
 import math
 import parameters
+import arcade
+import random
 
 class EnemyShip(NonPlayerObject):
     def setup(self,center_x, center_y, velocity, angle):
@@ -17,6 +19,23 @@ class EnemyShip(NonPlayerObject):
         self.topSpeed = 4
         self.acceleration = 2
         self.bulletStrength = 1
+        self.anamationSpeed = 10
+        self.animationFrame = 0
+        self.curTexture = 0
+        self.straight_textures = []
+        self.turn_left_textures = []
+        self.turn_right_textures = []
+        # self.get_textures()
+
+    def set_textures(self, textures):
+        for i in range(0,4):
+            self.straight_textures.append(textures[i])
+        for i in range(6,9):
+            self.turn_left_textures.append(textures[i])
+        for i in range(9,12):
+            self.turn_right_textures.append(textures[i])
+        self.current_texture_list = self.straight_textures
+        self.texture = self.current_texture_list[self.curTexture]
 
     def track(self, player_x, player_y):
         deltaX = player_x - self.center_x
@@ -34,6 +53,17 @@ class EnemyShip(NonPlayerObject):
         elif self.turnChange < -self.maxTurn:
             self.turnChange = -self.maxTurn
 
+    def change_animation(self, i):
+        if i == 0:
+            self.current_texture_list = self.straight_textures
+        elif i == 1:
+            self.current_texture_list = self.turn_left_textures
+        elif i == 2:
+            self.current_texture_list = self.turn_right_textures
+        self.curTexture = self.curTexture % len(self.current_texture_list)
+        self.texture = self.current_texture_list[self.curTexture]
+
+
     def update(self):
         self.angle += self.turnChange
         angleRad = math.radians(self.angle)
@@ -47,6 +77,17 @@ class EnemyShip(NonPlayerObject):
         self.velocity = (deltaX, deltaY)
         if self.cooldown > 0:
             self.cooldown -= 1
+        if self.turnChange == 0:
+            self.change_animation(0)
+        elif self.turnChange > 0:
+            self.change_animation(1)
+        elif self.turnChange < 0:
+            self.change_animation(2)
+        self.animationFrame += 1
+        if (self.animationFrame == self.anamationSpeed):
+            self.animationFrame = 0
+            self.curTexture = (self.curTexture + 1) % len(self.current_texture_list)
+            self.texture = self.current_texture_list[self.curTexture]
         super().update()
 
     def fire(self):
@@ -56,4 +97,5 @@ class EnemyShip(NonPlayerObject):
         x = -self.bulletSpeed * math.sin(angleRad)
         y = self.bulletSpeed * math.cos(angleRad)
         bullet.setup((x,y), self.center_x, self.center_y, self.angle, self.bulletStrength)
+        arcade.Sound(parameters.SOUND_SHOOT).play()
         return bullet

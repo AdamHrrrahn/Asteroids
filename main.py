@@ -33,6 +33,7 @@ class Game(arcade.Window):
         self.drop_list = arcade.SpriteList()
         self.paused = False
         self.player = PlayerShip("sprites/PlayerShip/tile000.png", parameters.SCALING)
+        self.enemy_textures = arcade.texture.load_spritesheet("sprites\EnemiesShips\EnemiesSpriteSheet.png", 32, 32, 6, 90)
         self.player.setUp()
         self.player.center_y = self.height / 2
         self.player.center_x = self.width / 2
@@ -49,7 +50,7 @@ class Game(arcade.Window):
         arcade.draw_text(self.score, 10, 10, arcade.color.YELLOW, 20)
 
     def add_enemy(self, delta_time: float):
-        enemy = EnemyShip("sprites/spaceships/spaceships1.png", parameters.SCALING)
+        enemy = EnemyShip("sprites/EnemiesShips/tile000.png", parameters.SCALING*2)
         side = random.randint(0,3)
         center_x = 0
         center_y = 0
@@ -80,6 +81,21 @@ class Game(arcade.Window):
             velocity = (4,0)   
             angle = 90 
         enemy.setup(center_x, center_y, velocity, angle)
+        type = random.randint(1,3)
+        start = 0
+        end = 0
+        if type == 1:
+            start = 18
+            end = 30
+        elif type == 2:
+            start = 36
+            end = 48
+        elif type == 3:
+            start = 66
+            end = 78
+        textures = self.enemy_textures[start:end]
+        textures.reverse()
+        enemy.set_textures(textures)
         self.enemies_list.append(enemy)
         self.all_sprites.append(enemy) 
 
@@ -168,13 +184,23 @@ class Game(arcade.Window):
             if drop.collides_with_sprite(self.player):
                 drop.remove_from_sprite_lists()
                 self.score += 1
+                arcade.Sound(parameters.SOUND_PICKUP).play()
         if self.player.collides_with_list(self.asteroids_list) or self.player.collides_with_list(self.enemies_list) or self.player.collides_with_list(self.enemy_bullets_list):
             self.player.remove_from_sprite_lists()
         for bullet in self.player_bullet_list:
             hitList = bullet.collides_with_list(self.asteroids_list)
-            hitList.extend(bullet.collides_with_list(self.enemies_list))
             if len(hitList) > 0:
                 bullet.remove_from_sprite_lists()
+                arcade.Sound(parameters.SOUND_SHIP_DIE).play()
+                for object in hitList:
+                    drop = object.kill()
+                    if (drop):
+                        self.drop_list.append(drop)
+                        self.all_sprites.append(drop)
+            hitList = bullet.collides_with_list(self.enemies_list)
+            if len(hitList) > 0:
+                bullet.remove_from_sprite_lists()
+                arcade.Sound(parameters.SOUND_ASTEROID_DIE).play()
                 for object in hitList:
                     drop = object.kill()
                     if (drop):
