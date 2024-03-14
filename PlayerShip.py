@@ -13,7 +13,7 @@ class PlayerShip(arcade.Sprite):
         self.bulletSpeed = 10
         self.bulletStrength = 1
         self.bulletCount = 1
-        self.fireRate = 20
+        self.fireRate = 30
         self.cooldown = 0
         self.topSpeed = 5
         self.anamationSpeed = 10

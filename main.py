@@ -42,6 +42,7 @@ class Game(arcade.Window):
         arcade.schedule(self.add_enemy, 10)
         self.score = 0
         self.firing = False
+        self.dead = False
 
 
     def on_draw(self):
@@ -102,7 +103,7 @@ class Game(arcade.Window):
     def add_asteroid(self, delta_time: float):
         if len(self.asteroids_list) >= 5:
             return
-        asteroid = Asteroid("sprites/asset/meteor.png", parameters.SCALING*random.randint(1,6)/2)
+        asteroid = Asteroid("sprites/asset/meteor.png", parameters.SCALING*random.uniform(1,5)/2)
         asteroid.setRotation()
         side = random.randint(0,3)
         if (side == 0):
@@ -187,6 +188,9 @@ class Game(arcade.Window):
                 arcade.Sound(parameters.SOUND_PICKUP).play()
         if self.player.collides_with_list(self.asteroids_list) or self.player.collides_with_list(self.enemies_list) or self.player.collides_with_list(self.enemy_bullets_list):
             self.player.remove_from_sprite_lists()
+            arcade.Sound(parameters.SOUND_SHIP_DIE).play()
+            self.player.center_x = -parameters.MAP_WIDTH*3
+            self.player.center_y = -parameters.MAP_HEIGHT*3
         for bullet in self.player_bullet_list:
             hitList = bullet.collides_with_list(self.asteroids_list)
             if len(hitList) > 0:
