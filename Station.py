@@ -1,5 +1,5 @@
 import arcade
 
 class Station(arcade.Sprite):
-    def on_update(self):
-        self.angle += 5
+    def update(self):
+        self.angle += 1

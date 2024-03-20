@@ -1,5 +1,5 @@
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 800
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 1000
 SCREEN_TITLE = "Asteroids"
 SCALING = 2.0
 MAP_HEIGHT = 10000
@@ -15,7 +15,7 @@ SOUND_SHIP_HIT = "sounds/Retro Impact Metal 05.wav"
 SOUND_SHIP_DIE = "sounds/Retro Explosion Short 01.wav"
 SOUND_SHIELD_HIT = "sounds/Retro Impact Metal 36.wav"
 SOUND_LANDING = "sounds/Retro Turn Off 12.wav"
-SOUND_TAKEOFF = "sounds/Retro Ascending Short 20.wavx"
+SOUND_TAKEOFF = "sounds/Retro Ascending Short 20.wav"
 SOUND_START_GAME = "sounds/Retro Success Melody 01 - sawtooth lead 1.wav"
 SOUND_REPAIR = "sounds/Retro Magic Protection 01"
 SOUND_UPGRADE = "sounds/Retro Event Acute 08"

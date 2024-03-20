@@ -6,8 +6,10 @@ from Bullet import Bullet
 
 class PlayerShip(arcade.Sprite):
     def setUp(self):
-        self.turnSpeed = 5
-        self.acceleration = 1
+        self.angle = 0
+        self.velocity = (0,0)
+        self.turnSpeed = 3
+        self.acceleration = 0.5
         self.accelerating = 0
         self.turnDir = 0
         self.bulletSpeed = 10
@@ -15,7 +17,7 @@ class PlayerShip(arcade.Sprite):
         self.bulletCount = 1
         self.fireRate = 30
         self.cooldown = 0
-        self.topSpeed = 5
+        self.topSpeed = 3
         self.anamationSpeed = 10
         self.animationFrame = 0
         self.curTexture = 0
@@ -34,6 +36,9 @@ class PlayerShip(arcade.Sprite):
         self.cargo = 0
         self.maxCargo = 3
         self.cargoValue = 0
+        self.maxed = [False, False, False, False, False, False, False, False, False, False]
+        self.upgradeCost = 5
+
 
 
     def get_textures(self):

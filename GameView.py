@@ -17,9 +17,10 @@ class GameView(arcade.View):
         self.player = player
         self.setup()
 
-    def setViews(self, pause, station):
+    def setViews(self, pause, station, death):
         self.pauseView = pause
         self.stationView = station
+        self.deathView = death
 
     def setup(self):
         self.enemies_list = arcade.SpriteList()
@@ -248,10 +249,11 @@ class GameView(arcade.View):
             self.player.hit(damage)
             object.hit(damage)
             if self.player.health <= 0:
-                self.player.remove_from_sprite_lists()
+                # self.player.remove_from_sprite_lists()
                 arcade.Sound(parameters.SOUND_SHIP_DIE).play()
-                self.player.center_x = -parameters.MAP_WIDTH*3
-                self.player.center_y = -parameters.MAP_HEIGHT*3
+                # self.player.center_x = -parameters.MAP_WIDTH*3
+                # self.player.center_y = -parameters.MAP_HEIGHT*3
+                self.window.show_view(self.deathView)
             if object.health <= 0:
                 if object is EnemyShip:
                     self.ship_kill(object)

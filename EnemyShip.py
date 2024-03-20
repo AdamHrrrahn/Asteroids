@@ -9,16 +9,16 @@ import random
 class EnemyShip(NonPlayerObject):
     def setup(self,center_x, center_y, velocity, angle):
         self.bulletSpeed = 10
-        self.fireRate = 50
+        self.fireRate = 100
         self.cooldown = self.fireRate
         self.center_x = center_x
         self.center_y = center_y
         self.velocity = velocity
         self.angle = angle 
-        self.maxTurn = 2
+        self.maxTurn = 1
         self.turnChange = 0
         self.topSpeed = 3
-        self.acceleration = 2
+        self.acceleration = 1
         self.bulletStrength = 1
         self.anamationSpeed = 10
         self.animationFrame = 0

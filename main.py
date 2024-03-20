@@ -5,6 +5,7 @@ from PauseView import PauseView
 from PlayerShip import PlayerShip
 from UpgradeView import UpgradeView
 from IntroView import IntroView
+from DeathView import DeathView
 import parameters
 
 
@@ -17,11 +18,13 @@ if __name__ == "__main__":
     stationView = StationView()
     upgradeView = UpgradeView()
     introView = IntroView()
+    deathView = DeathView()
     introView.setViews(gameView)
-    gameView.setViews(pauseView, stationView)
+    gameView.setViews(pauseView, stationView, deathView)
     pauseView.setViews(gameView)
     stationView.setViews(gameView, player, upgradeView)
     upgradeView.setViews(stationView, player)
+    deathView.setViews(gameView)
     window.show_view(introView)
     # app = Game()
     
