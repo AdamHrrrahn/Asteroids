@@ -7,7 +7,7 @@ from Bullet import Bullet
 class PlayerShip(arcade.Sprite):
     def setUp(self):
         self.turnSpeed = 5
-        self.acceleration = 4
+        self.acceleration = 1
         self.accelerating = 0
         self.turnDir = 0
         self.bulletSpeed = 10
@@ -24,6 +24,16 @@ class PlayerShip(arcade.Sprite):
         self.turn_right_textures = []
         self.get_textures()
         self.current_texture_list = self.straight_textures
+        self.health = 3
+        self.maxHealth = 3
+        self.shieldMax = 2
+        self.shieldCurrent = 2
+        self.shieldCooldown = 300
+        self.shieldRegen = 1
+        self.wallet = 11
+        self.cargo = 0
+        self.maxCargo = 3
+        self.cargoValue = 0
 
 
     def get_textures(self):
@@ -47,6 +57,14 @@ class PlayerShip(arcade.Sprite):
         self.texture = self.current_texture_list[self.curTexture]
 
     def update(self):
+        if (self.shieldCurrent < self.shieldMax):
+            self.shieldCooldown -= 1
+            if self.shieldCooldown == 0:
+                self.shieldCooldown = 300
+                self.shieldCurrent += self.shieldRegen
+                if self.shieldCurrent > self.shieldMax:
+                    self.shieldCurrent = self.shieldMax
+
         self.animationFrame += 1
         if (self.animationFrame == self.anamationSpeed):
             self.animationFrame = 0
@@ -84,3 +102,9 @@ class PlayerShip(arcade.Sprite):
         bullet.setup((x,y), self.center_x, self.center_y, self.angle, self.bulletStrength)
         arcade.Sound(parameters.SOUND_SHOOT).play()
         return bullet
+    
+    def hit(self, damage):
+        shieldDmg = min(self.shieldCurrent, damage)
+        hullDmg = damage - shieldDmg
+        self.shieldCurrent -= shieldDmg
+        self.health -= hullDmg

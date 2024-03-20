@@ -10,9 +10,4 @@ class NonPlayerObject(arcade.Sprite):
             self.remove_from_sprite_lists()
 
     
-    def kill(self):
-        drop = arcade.Sprite("sprites/asset/flare.png", 1)
-        drop.top = self.top 
-        drop.left = self.left
-        self.remove_from_sprite_lists()
-        return drop
+

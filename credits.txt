@@ -1,4 +1,4 @@
 ship sprites by Pixel Carvel
-resource sprites by Wenrexa
+resource adn station sprites by Wenrexa
 asteroids and lasers by AX Assets
 sounds by Kronbits

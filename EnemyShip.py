@@ -1,5 +1,6 @@
 from NPO import NonPlayerObject
 from Bullet import Bullet
+from Drop import Drop
 import math
 import parameters
 import arcade
@@ -14,9 +15,9 @@ class EnemyShip(NonPlayerObject):
         self.center_y = center_y
         self.velocity = velocity
         self.angle = angle 
-        self.maxTurn = 3
+        self.maxTurn = 2
         self.turnChange = 0
-        self.topSpeed = 4
+        self.topSpeed = 3
         self.acceleration = 2
         self.bulletStrength = 1
         self.anamationSpeed = 10
@@ -25,7 +26,12 @@ class EnemyShip(NonPlayerObject):
         self.straight_textures = []
         self.turn_left_textures = []
         self.turn_right_textures = []
-        # self.get_textures()
+        self.health = 2
+        self.shieldMax = 1
+        self.shieldCurrent = 1
+        self.shieldCooldown = 600
+        self.shieldRegen = 1
+
 
     def set_textures(self, textures):
         for i in range(0,4):
@@ -68,12 +74,20 @@ class EnemyShip(NonPlayerObject):
 
 
     def update(self):
+        if (self.shieldCurrent < self.shieldMax):
+            self.shieldCooldown -= 1
+            if self.shieldCooldown == 0:
+                self.shieldCooldown = 600
+                self.shieldCurrent += self.shieldRegen
+                if self.shieldCurrent > self.shieldMax:
+                    self.shieldCurrent = self.shieldMax
+
         self.angle += self.turnChange
         angleRad = math.radians(self.angle)
         deltaX, deltaY = self.velocity
         deltaX += -self.acceleration * math.sin(angleRad)
         deltaY += self.acceleration * math.cos(angleRad)
-        speed = math.sqrt(deltaX*deltaX + deltaY*deltaY)
+        speed = math.hypot(deltaX, deltaY)
         if speed > self.topSpeed:
             deltaX *= self.topSpeed/speed
             deltaY *= self.topSpeed/speed
@@ -102,3 +116,16 @@ class EnemyShip(NonPlayerObject):
         bullet.setup((x,y), self.center_x, self.center_y, self.angle, self.bulletStrength)
         arcade.Sound(parameters.SOUND_SHOOT).play()
         return bullet
+    
+
+    def kill(self):
+        drop = Drop("sprites/drops/17.png", 1)
+        drop.setup(2, self.center_x, self.center_y)
+        self.remove_from_sprite_lists()
+        return drop
+    
+    def hit(self, damage):
+        shieldDmg = min(self.shieldCurrent, damage)
+        hullDmg = damage - shieldDmg
+        self.shieldCurrent -= shieldDmg
+        self.health -= hullDmg

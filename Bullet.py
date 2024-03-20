@@ -7,3 +7,8 @@ class Bullet(NonPlayerObject):
         self.center_x = x
         self.center_y = y
         self.strength = strength
+        self.health = strength
+        self.shieldCurrent = 0
+
+    def hit(self, damage):
+        self.remove_from_sprite_lists()
