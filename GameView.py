@@ -15,12 +15,18 @@ class GameView(arcade.View):
         super().__init__()
         arcade.set_background_color(arcade.color.BLACK)
         self.player = player
-        self.setup()
+        self.resetPosition()
 
     def setViews(self, pause, station, death):
         self.pauseView = pause
         self.stationView = station
         self.deathView = death
+
+    def resetPosition(self):
+        self.player.velocity = (0,0)
+        self.player.angle = 0
+        self.player.center_y = parameters.SCREEN_HEIGHT / 2
+        self.player.center_x = parameters.SCREEN_WIDTH / 2
 
     def setup(self):
         self.enemies_list = arcade.SpriteList()
@@ -35,12 +41,7 @@ class GameView(arcade.View):
         self.station.center_x = parameters.SCREEN_WIDTH / 2
         self.all_sprites.append(self.station)
         self.enemy_textures = arcade.texture.load_spritesheet("sprites\EnemiesShips\EnemiesSpriteSheet.png", 32, 32, 6, 90)
-        self.player.setUp()
-        self.player.center_y = parameters.SCREEN_HEIGHT / 2
-        self.player.center_x = parameters.SCREEN_WIDTH / 2
         self.all_sprites.append(self.player)
-        # arcade.schedule(self.add_asteroid, 2.0)
-        # arcade.schedule(self.add_enemy, 10)
         self.asteroidCooldown = parameters.ASTEROID_SPAWN_RATE
         self.enemyCooldown = parameters.ENEMY_SPAWN_RATE
         self.firing = False
@@ -64,7 +65,7 @@ class GameView(arcade.View):
         if self.player.shieldCurrent > 0:
             arcade.draw_circle_outline(self.player.center_x, self.player.center_y, 20*parameters.SCALING, arcade.color.BLUE, 2)
         self.player.draw()
-        # arcade.draw_text(self.player.wallet, 10, 10, arcade.color.YELLOW, 20)
+        arcade.draw_text(self.player.wallet, 10, 10, arcade.color.YELLOW, 20)
         arcade.draw_text(f"Health:  {self.player.health}", 10, parameters.SCREEN_HEIGHT-30, arcade.color.RED, 20)
         arcade.draw_text(f"Shields: {self.player.shieldCurrent}", 10, parameters.SCREEN_HEIGHT - 60, arcade.color.BLUE, 20)
         arcade.draw_text(f"Carco: {self.player.cargo}/{self.player.maxCargo}", 10, parameters.SCREEN_HEIGHT - 90, arcade.color.YELLOW, 20)
@@ -177,6 +178,7 @@ class GameView(arcade.View):
         #     self.setup()
         if self.canDock and symbol == arcade.key.L:
             arcade.Sound(parameters.SOUND_LANDING).play()
+            self.player.shieldCurrent = self.player.shieldMax
             self.window.show_view(self.stationView)
             
     def on_key_release(self, symbol, modifiers):
@@ -217,8 +219,6 @@ class GameView(arcade.View):
         if self.enemyCooldown == 0:
             self.enemyCooldown = parameters.ENEMY_SPAWN_RATE
             self.add_enemy()
-        # return super().on_update(delta_time)
-        # self.all_sprites.add_spatial_hashes()
         if self.paused:
             return
         if self.firing:
@@ -253,6 +253,7 @@ class GameView(arcade.View):
                 arcade.Sound(parameters.SOUND_SHIP_DIE).play()
                 # self.player.center_x = -parameters.MAP_WIDTH*3
                 # self.player.center_y = -parameters.MAP_HEIGHT*3
+                self.resetPosition()
                 self.window.show_view(self.deathView)
             if object.health <= 0:
                 if object is EnemyShip:

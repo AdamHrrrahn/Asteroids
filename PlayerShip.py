@@ -2,22 +2,22 @@ import arcade
 # from Object import Object
 import math
 import parameters
+import pickle
 from Bullet import Bullet
 
 class PlayerShip(arcade.Sprite):
     def setUp(self):
         self.angle = 0
         self.velocity = (0,0)
-        self.turnSpeed = 3
+        self.turnSpeed = 3.5
         self.acceleration = 0.5
         self.accelerating = 0
         self.turnDir = 0
         self.bulletSpeed = 10
         self.bulletStrength = 1
-        self.bulletCount = 1
         self.fireRate = 30
         self.cooldown = 0
-        self.topSpeed = 3
+        self.topSpeed = 3.5
         self.anamationSpeed = 10
         self.animationFrame = 0
         self.curTexture = 0
@@ -32,12 +32,13 @@ class PlayerShip(arcade.Sprite):
         self.shieldCurrent = 2
         self.shieldCooldown = 300
         self.shieldRegen = 1
-        self.wallet = 11
+        self.wallet = 0
         self.cargo = 0
         self.maxCargo = 3
         self.cargoValue = 0
         self.maxed = [False, False, False, False, False, False, False, False, False, False]
         self.upgradeCost = 5
+        self.level = 1
 
 
 
@@ -113,3 +114,49 @@ class PlayerShip(arcade.Sprite):
         hullDmg = damage - shieldDmg
         self.shieldCurrent -= shieldDmg
         self.health -= hullDmg
+
+    def save(self, file):
+        db = {"MaxHealth" : self.maxHealth, 
+              "currentHealth":self.health, 
+              "maxShields":self.shieldMax, 
+              "currentShields":self.shieldCurrent, 
+              "shieldRegen":self.shieldRegen,
+              "turnSpeed": self.turnSpeed,
+              "acceleration":self.acceleration,
+              "bulletSpeed":self.bulletSpeed,
+              "bulletStrength":self.bulletStrength,
+              "fireRate":self.fireRate,
+              "topSpeed":self.topSpeed,
+              "wallet":self.wallet,
+              "cargo":self.cargo,
+              "maxCargo":self.maxCargo,
+              "cargoValue":self.cargoValue,
+              "maxed":self.maxed,
+              "upgradeCost":self.upgradeCost,
+              "level":self.level}
+        dbfile = open(f"savefile{file}", 'wb')
+        pickle.dump(db, dbfile)
+        dbfile.close()
+
+    def load(self, file):
+        dbfile = open(f"savefile{file}", 'rb')
+        data = pickle.load(dbfile)
+        self.maxHealth = int(data["MaxHealth"])
+        self.health = int(data["currentHealth"])
+        self.shieldMax = int(data["maxShields"])
+        self.shieldCurrent = int(data["currentShields"])
+        self.shieldRegen = int(data["shieldRegen"])
+        self.turnSpeed = float(data["turnSpeed"])
+        self.acceleration = float(data["acceleration"])
+        self.bulletSpeed = int(data["bulletSpeed"])
+        self.bulletStrength = int(data["bulletStrength"])
+        self.fireRate = int(data["fireRate"])
+        self.topSpeed = int(data["topSpeed"])
+        self.wallet = int(data["wallet"])
+        self.cargo = int(data["cargo"])
+        self.maxCargo = int(data["maxCargo"])
+        self.cargoValue = int(data["cargoValue"])
+        self.maxed = data["maxed"]
+        self.upgradeCost = int(data["upgradeCost"])
+        self.level = int(data["level"])
+        dbfile.close()

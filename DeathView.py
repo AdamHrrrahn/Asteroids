@@ -2,8 +2,8 @@ import arcade
 import parameters
 
 class DeathView(arcade.View):
-    def setViews(self, game):
-        self.gameView = game
+    def setViews(self, view):
+        self.nextView = view
         self.selected = 0
 
     def on_draw(self):
@@ -15,8 +15,7 @@ class DeathView(arcade.View):
 
     def resume_button(self):
         self.selected = 0
-        self.gameView.setup()
-        self.window.show_view(self.gameView)
+        self.window.show_view(self.nextView)
         
 
     def quit_button(self):

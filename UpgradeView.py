@@ -22,16 +22,16 @@ class UpgradeView(arcade.View):
         arcade.draw_text(f"${self.player.wallet}", 10, 10, arcade.color.YELLOW, 20)
         arcade.draw_text(f"Upgrade cost: ${self.player.upgradeCost}", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+300, arcade.color.WHITE, 20, anchor_x="center")
 
-        arcade.draw_text("Max Health", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+240, arcade.color.GRAY if self.player.maxed[0] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Max Shields", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+180, arcade.color.GRAY if self.player.maxed[1] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Shield regen", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+120, arcade.color.GRAY if self.player.maxed[2] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Cargo Space", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+60, arcade.color.GRAY if self.player.maxed[3] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Fire rate", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2, arcade.color.GRAY if self.player.maxed[4] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Max Health: {self.player.maxHealth}" + ("Maxed" if self.player.maxed[0] else f"->{self.player.maxHealth+1}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+240, arcade.color.GRAY if self.player.maxed[0] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Max Shields: {self.player.shieldMax}" + ("Maxed" if self.player.maxed[1] else f"->{self.player.shieldMax+1}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+180, arcade.color.GRAY if self.player.maxed[1] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Shield regen: {self.player.shieldRegen}" + ("Maxed" if self.player.maxed[2] else f"->{self.player.shieldRegen+1}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+120, arcade.color.GRAY if self.player.maxed[2] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Cargo Space: {self.player.maxCargo}" + ("Maxed" if self.player.maxed[3] else f"->{self.player.maxCargo+1}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+60, arcade.color.GRAY if self.player.maxed[3] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Fire rate: {self.player.maxHealth}" + ("Maxed" if self.player.maxed[4] else f"->{self.player.maxHealth+1}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2, arcade.color.GRAY if self.player.maxed[4] else arcade.color.WHITE, 20, anchor_x="center")
 
-        arcade.draw_text("Bullet Damage", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-60, arcade.color.GRAY if self.player.maxed[5] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Acceleration", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-120, arcade.color.GRAY if self.player.maxed[7] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Top Speed", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-180, arcade.color.GRAY if self.player.maxed[8] else arcade.color.WHITE, 20, anchor_x="center")
-        arcade.draw_text("Turn Speed", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-240, arcade.color.GRAY if self.player.maxed[9] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Bullet Damage: {self.player.bulletStrength}" + ("Maxed" if self.player.maxed[5] else f"->{self.player.bulletStrength+1}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-60, arcade.color.GRAY if self.player.maxed[5] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Acceleration: {self.player.acceleration}" + ("Maxed" if self.player.maxed[6] else f"->{self.player.acceleration+0.5}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-120, arcade.color.GRAY if self.player.maxed[7] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Top Speed: {self.player.topSpeed}" + ("Maxed" if self.player.maxed[7] else f"->{self.player.topSpeed+0.5}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-180, arcade.color.GRAY if self.player.maxed[8] else arcade.color.WHITE, 20, anchor_x="center")
+        arcade.draw_text(f"Turn Speed: {self.player.turnSpeed}" + ("Maxed" if self.player.maxed[8] else f"->{self.player.turnSpeed+0.5}"), parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-240, arcade.color.GRAY if self.player.maxed[9] else arcade.color.WHITE, 20, anchor_x="center")
 
         arcade.draw_text("Return", parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2-300, arcade.color.WHITE, 20, anchor_x="center")
         arcade.draw_rectangle_outline(parameters.SCREEN_WIDTH/2, parameters.SCREEN_HEIGHT/2+250-60*self.selected, 220, 40, arcade.color.YELLOW)
@@ -46,18 +46,18 @@ class UpgradeView(arcade.View):
             self.player.maxed[0] = True
 
     def upgrade_max_shields(self):
-        self.player.maxShields += 1
-        if self.player.maxShields == 10:
+        self.player.shieldMax += 1
+        if self.player.shieldMax == 10:
             self.player.maxed[1] = True
 
     def upgrade_shield_regen(self):
-        self.player.ShieldRegen += 1
-        if self.player.ShieldRegen == 5:
+        self.player.shieldRegen += 1
+        if self.player.shieldRegen == 5:
             self.player.maxed[2] = True
 
     def upgrade_max_cargo(self):
         self.player.maxCargo += 1
-        if self.player.maxHealth == 20:
+        if self.player.maxCargo == 20:
             self.player.maxed[3] = True
 
     def upgrade_fire_rate(self):
@@ -76,13 +76,13 @@ class UpgradeView(arcade.View):
             self.player.maxed[6] = True
 
     def upgrade_top_speed(self):
-        self.player.topSpeed += 1
-        if self.player.topSpeed == 10:
+        self.player.topSpeed += 0.5
+        if self.player.topSpeed == 8:
             self.player.maxed[7] = True
 
     def upgrade_turn_speed(self):
-        self.player.turnSpeed += 1
-        if self.player.turnSpeed == 10:
+        self.player.turnSpeed += 0.5
+        if self.player.turnSpeed == 6:
             self.player.maxed[8] = True
 
     def on_key_press(self, symbol, modifiers):
@@ -102,4 +102,5 @@ class UpgradeView(arcade.View):
                     self.upgrade[self.selected]()
                     self.player.wallet -= self.player.upgradeCost
                     self.player.upgradeCost = math.ceil(self.player.upgradeCost * 1.2)
+                    self.player.level += 1
                     arcade.Sound(parameters.SOUND_UPGRADE).play()

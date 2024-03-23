@@ -22,7 +22,7 @@ class Asteroid(NonPlayerObject):
         drop_list = arcade.SpriteList()
         child_list = arcade.SpriteList()
         num = math.ceil(self.size/2)
-        for i in range(num):
+        for i in range(random.randint(max(0,(num-1)), num)):
             drop = Drop("sprites/drops/01.png", 1)
             drop.setup(1, self.center_x+random.randint(-parameters.SCREEN_WIDTH/50, parameters.SCREEN_WIDTH/50), self.center_y+random.randint(-parameters.SCREEN_HEIGHT/50, parameters.SCREEN_HEIGHT/50))
             drop_list.append(drop)

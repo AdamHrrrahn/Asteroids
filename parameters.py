@@ -1,11 +1,12 @@
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 1000
+SCREEN_WIDTH = 950
+SCREEN_HEIGHT = 950
 SCREEN_TITLE = "Asteroids"
 SCALING = 2.0
 MAP_HEIGHT = 10000
 MAP_WIDTH = 10000
 ASTEROID_SPAWN_RATE = 60
 ENEMY_SPAWN_RATE = 300
+NUM_SAVE_FILES = 3
 
 SOUND_SHOOT = "sounds/Retro Weapon Plasma Type B 03.wav"
 SOUND_PICKUP = "sounds/Retro Water Drop 01.wav"
@@ -17,6 +18,6 @@ SOUND_SHIELD_HIT = "sounds/Retro Impact Metal 36.wav"
 SOUND_LANDING = "sounds/Retro Turn Off 12.wav"
 SOUND_TAKEOFF = "sounds/Retro Ascending Short 20.wav"
 SOUND_START_GAME = "sounds/Retro Success Melody 01 - sawtooth lead 1.wav"
-SOUND_REPAIR = "sounds/Retro Magic Protection 01"
-SOUND_UPGRADE = "sounds/Retro Event Acute 08"
+SOUND_REPAIR = "sounds/Retro Magic Protection 01.wav"
+SOUND_UPGRADE = "sounds/Retro Event Acute 08.wav"
 SOUND_SELL_CARGO = "sounds/Retro PickUp Coin 07.wav"

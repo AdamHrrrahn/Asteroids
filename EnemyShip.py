@@ -46,11 +46,8 @@ class EnemyShip(NonPlayerObject):
     def track(self, player_x, player_y):
         deltaX = player_x - self.center_x
         deltaY = player_y - self.center_y
-        if (player_x < 0 or player_y < 0):
-            self.turnChange = 0
-            return
         targetAngle = math.degrees(math.atan2(deltaY, deltaX)) - 90
-        if targetAngle > 0:
+        if targetAngle < 0:
             targetAngle += 360
         self.turnChange = targetAngle - self.angle
         if self.turnChange > 180:
